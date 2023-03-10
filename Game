@@ -1,1 +1,31 @@
 
+
+def Sarah():
+	if sarahp == true and end != true:
+		print("I have some pieces. You'll need to find the rest of the puzzle.")
+	elif sarahp == false and end != true:
+		print("You have all that I found.")
+	else:
+		if end == 1:
+			print("Here is the treasure!")
+		elif lose == 1:
+			print("Did he get away?")
+
+dendt = 1
+def Daniel():
+	if end == false:
+		print("Can you open the vault?")
+	elif end == true:
+
+		if trader == true and dendt == 1:
+			print("YES! You got the clues!")
+			dendt += 1
+		elif trader == true and dendt == 2:
+			print("Oh that THIEF!")
+			dendt += 1
+		elif trader == true and dendt == 3:
+			print("...")
+
+def Fred():
+	if fredp == true and end != true:
+	print()
