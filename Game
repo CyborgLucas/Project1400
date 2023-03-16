@@ -1,31 +1,66 @@
 
+moveop = ["N","n","E","e","S","s","W","w"]
+posibleact = ["N","n","E","e","S","s","W","w","Interact","interact","Use","use"]
 
 def Sarah():
 	if sarahp == true and end != true:
-		print("I have some pieces. You'll need to find the rest of the puzzle.")
+		print("Sarah - I have some pieces. You'll need to find the rest of the puzzle.")
 	elif sarahp == false and end != true:
-		print("You have all that I found.")
+		print("Sarah - You have all that I found.")
 	else:
-		if end == 1:
-			print("Here is the treasure!")
-		elif lose == 1:
-			print("Did he get away?")
+		if end == true:
+			print("Sarah - Here is the treasure!")
+		elif trader == true and lose == true:
+			print("Sarah - Did he get away?")
 
 dendt = 1
 def Daniel():
 	if end == false:
-		print("Can you open the vault?")
+		print("Daniel - Can you open the vault?")
 	elif end == true:
-
 		if trader == true and dendt == 1:
-			print("YES! You got the clues!")
+			print("Daniel - YES! You got the clues!")
 			dendt += 1
 		elif trader == true and dendt == 2:
-			print("Oh that THIEF!")
-			dendt += 1
-		elif trader == true and dendt == 3:
-			print("...")
+			print("Daniel - Oh that THIEF!")
+		elif trader == true and lose == true:
+			print("Daniel - ...")
+	return dendt
 
 def Fred():
 	if fredp == true and end != true:
-	print()
+		print("Fred - I have some pieces to the puzzle.")
+	elif fredp == false and end != true:
+		print("Fred - I have nothing.")
+	elif end == true:
+		if trader == true:
+			print("Fred - You will never stop me!")
+		elif trader != true:
+			print("Now I can retire!")
+
+def move(moveop):
+	map = """
+	     ___________________
+        { O O O O O O O O O |
+ _______| O O T O = O T O P |_______
+| P O O O O O O O O O O O O O O O O |
+| O O T O O O O O O O O O O O T O O | (Temple)
+| O O O O O O T O O O T O O O O O O |
+ __________ O O O O O O O __________
+          | O O O O O O O |      _______
+		  | O T O O O T O }     | O O O |
+		  | O O O O O O O |     | O O O |
+		  | O O O O O O O |     |__ + __| (Vault)
+		  | O T O O O T P |     | P O P |
+		  | O O O O O O O |     | O = P |
+		   _______O_______       _______
+		         |_|
+"""
+
+def action():
+	choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\nUse -- Use avalable item")
+	while choice not in posibleact:
+		print("That is not a valid action here.\n")
+		choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\nUse -- Use avalable item\n")
+	if choice in moveop:
+		move(choice)
