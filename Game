@@ -40,27 +40,123 @@ def Fred():
 
 def move(moveop):
 	map = """
-	     ___________________
-        { O O O O O O O O O |
- _______| O O T O = O T O P |_______
-| P O O O O O O O O O O O O O O O O |
-| O O T O O O O O O O O O O O T O O | (Temple)
-| O O O O O O T O O O T O O O O O O |
- __________ O O O O O O O __________
-          | O O O O O O O |      _______
-		  | O T O O O T O }     | O O O |
-		  | O O O O O O O |     | O O O |
-		  | O O O O O O O |     |__ + __| (Vault)
-		  | O T O O O T P |     | P O P |
-		  | O O O O O O O |     | O = P |
-		   _______O_______       _______
-		         |_|
+______________________________________________________________
+|       A B C D E F G H I J K L M N O P Q                     |
+|              ___________________                            |
+|  1          { - - - - - - - - - |                           |
+|  2   _______| - - T - = - T - - |_______                    |
+|  3  | P - - - - - - - - - - - P - - - - |                   |
+|  4  | - - T - - - - - - - - - - - T - - | (Temple)          |
+|  5  | - - - - - - T - - - T - - - - - - |                   |
+|  6  |__________ - - - - - - - __________|                   |
+|  7            | - - - - - - - |          R S T              |
+|  8            | - T - - - T - }         _______             |
+|  9            | - - - - - - - |    15  |       |            |
+|  10           | - - - - - - - |    16  |       | (Vault)    |
+|  11           | - T - - - T P |    17  |___+___|            |
+|  12           | - - - - - - - |    18  | P - P |            |
+|  13           |______ - ______|    19  | - = P |            |
+|                      |_|           20  |_______|            |
+|_____________________________________________________________|
+
+!   --  item
+P   --  person / thing
+|_  --  walls
+=   --  stairs
++   --  vault
+T   --  pillar
+-   --  nothing
+
+
 """
 
 def action():
-	choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\nUse -- Use avalable item")
+	choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\nUse -- Use avalable item\n")
 	while choice not in posibleact:
 		print("That is not a valid action here.\n")
 		choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\nUse -- Use avalable item\n")
 	if choice in moveop:
 		move(choice)
+
+def spot_actions()
+	A 
+	A 
+	A 
+	B 
+	B 
+	B 
+	C 
+	C 
+	C 
+	D 
+	D 
+	D 
+	E 
+	E 
+	E 
+	E 
+	E 
+	F 
+	F 
+	F 
+	F 
+	F 
+	F 
+	F 
+	F 
+	F 
+	F 
+	F 
+	F 
+	G 
+	G 
+	G 
+	G 
+	G 
+	G 
+	G 
+	G 
+	H 
+	H 
+	H 
+	H 
+	H 
+	H 
+	H 
+	H 
+	H 
+	H 
+	H 
+	H 
+	I 
+	I 
+	I 
+	I 
+	I 
+	I 
+	I 
+	I 
+	I 
+	I 
+	I 
+	I 
+	J 
+	J 
+	J 
+	J 
+	J 
+	J 
+	J 
+	J 
+	J 
+	J 
+	J 
+	J 
+	K 
+	K 
+	K 
+	K 
+	K 
+	K 
+	K 
+	K 
