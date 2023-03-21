@@ -75,8 +75,39 @@ def action():
 	while choice not in posibleact:
 		print("That is not a valid action here.\n")
 		choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\nUse -- Use avalable item\n")
-	if choice in moveop:
-		move(choice)
+	return choice
+
+def empty():
+	print("I don’t see anything.")
+	action()
+
+def lootspace():
+	print("Is that a clue?")
+	action()
+	if choice == Interact or interact:
+		inventory.append(item)
+		print("Yes! That was a clue.")
+
+def secretkey():
+	print("There is something weird about this wall...")
+	action()
+	if choice == Interact or interact:
+		inventory.append(key)
+		print("That is the Key!")
+
+def secretpotion():
+	print("There is something weird about this wall...")
+	if choice == Interact or interact:
+		inventory.append(potion)
+		print("Is that... a potion?")
+
+def ghost():
+
+def undead():
+
+def phantom():
+
+
 
 def spot_actions()
 	A 
@@ -160,3 +191,38 @@ def spot_actions()
 	K 
 	K 
 	K 
+	L 
+	L 
+	L 
+	L 
+	L 
+	L 
+	L 
+	L 
+	L 
+	L 
+	L 
+	L 
+	M 
+	M 
+	M 
+	M 
+	M 
+	N 
+	N 
+	N 
+	O 
+	O 
+	O 
+	P 
+	P 
+	P 
+	Q 
+	Q 
+	Q 
+	R 
+	R 
+	S 
+	S 
+	T 
+	T 
