@@ -1,7 +1,10 @@
 
 moveop = ["N","n","E","e","S","s","W","w"]
 posibleact = ["N","n","E","e","S","s","W","w","Interact","interact","Use","use"]
-
+inventory = []
+dendt = 1
+traitor = true
+spot = 1918
 def Sarah():
 	if sarahp == true and end != true:
 		print("Sarah - I have some pieces. You'll need to find the rest of the puzzle.")
@@ -10,20 +13,19 @@ def Sarah():
 	else:
 		if end == true:
 			print("Sarah - Here is the treasure!")
-		elif trader == true and lose == true:
+		elif traitor == true and lose == true:
 			print("Sarah - Did he get away?")
 
-dendt = 1
 def Daniel():
 	if end == false:
 		print("Daniel - Can you open the vault?")
 	elif end == true:
-		if trader == true and dendt == 1:
+		if traitor == true and dendt == 1:
 			print("Daniel - YES! You got the clues!")
 			dendt += 1
-		elif trader == true and dendt == 2:
+		elif traitor == true and dendt == 2:
 			print("Daniel - Oh that THIEF!")
-		elif trader == true and lose == true:
+		elif traitor == true and lose == true:
 			print("Daniel - ...")
 	return dendt
 
@@ -33,9 +35,9 @@ def Fred():
 	elif fredp == false and end != true:
 		print("Fred - I have nothing.")
 	elif end == true:
-		if trader == true:
+		if traitor == true:
 			print("Fred - You will never stop me!")
-		elif trader != true:
+		elif traitor != true:
 			print("Now I can retire!")
 
 def move(moveop):
@@ -51,8 +53,8 @@ ______________________________________________________________
 |  6  |__________ - - - - - - - __________|                   |
 |  7            | - - - - - - - |          R S T              |
 |  8            | - T - - - T - }         _______             |
-|  9            | - - - - - - - |    15  |       |            |
-|  10           | - - - - - - - |    16  |       | (Vault)    |
+|  9            | - - - - - - - |        |       |            |
+|  10           | - - - - - - - |        |       | (Vault)    |
 |  11           | - T - - - T P |    17  |___+___|            |
 |  12           | - - - - - - - |    18  | P - P |            |
 |  13           |______ - ______|    19  | - = P |            |
@@ -101,128 +103,156 @@ def secretpotion():
 		inventory.append(potion)
 		print("Is that... a potion?")
 
-def ghost():
+def ghost(): #Nice
+	print("If you help me I might be able to help you with your puzzel. I need the ####")
+	action()
+	if choice == Interact or interact:
+		if #### in inventory:
+			inventory.append(##,##)
+			return inventory
+		else:
+		print("I need the #### to be freed, I can't help until so.")
 
-def undead():
+def stalker(): #Mean
+	print("You can’t get the clue until you can help me. I'll be freed it you give me the ####")
+	action()
+	if choice == Interact or interact:
+		if #### in inventory:
+			inventory.append(##,##,##)
+			return inventory
+		else:
+		print("I need the #### to be freed, I won't give you help until so.")
 
-def phantom():
-
-
+def phantom(): #Help
+	print("I have been trapped here for 1723 years! I’ll get you some clues if you free me from my curse. I need the #### nad ####")
+	action()
+	if choice == Interact or interact:
+		if #### and #### in inventory:
+			inventory.append(##,##,##,##)
+			traitor = false
+			return inventory
+		else:
+			print("I still need the two ####")
+		
 
 def spot_actions()
-	A 
-	A 
-	A 
-	B 
-	B 
-	B 
-	C 
-	C 
-	C 
-	D 
-	D 
-	D 
-	E 
-	E 
-	E 
-	E 
-	E 
-	F 
-	F 
-	F 
-	F 
-	F 
-	F 
-	F 
-	F 
-	F 
-	F 
-	F 
-	F 
-	G 
-	G 
-	G 
-	G 
-	G 
-	G 
-	G 
-	G 
-	H 
-	H 
-	H 
-	H 
-	H 
-	H 
-	H 
-	H 
-	H 
-	H 
-	H 
-	H 
-	I 
-	I 
-	I 
-	I 
-	I 
-	I 
-	I 
-	I 
-	I 
-	I 
-	I 
-	I 
-	J 
-	J 
-	J 
-	J 
-	J 
-	J 
-	J 
-	J 
-	J 
-	J 
-	J 
-	J 
-	K 
-	K 
-	K 
-	K 
-	K 
-	K 
-	K 
-	K 
-	L 
-	L 
-	L 
-	L 
-	L 
-	L 
-	L 
-	L 
-	L 
-	L 
-	L 
-	L 
-	M 
-	M 
-	M 
-	M 
-	M 
-	N 
-	N 
-	N 
-	O 
-	O 
-	O 
-	P 
-	P 
-	P 
-	Q 
-	Q 
-	Q 
-	R 
-	R 
-	S 
-	S 
-	T 
-	T 
+	if spot > 0 and < 200:
+		A3 = 
+		A4 = 
+		A5 = 
+	if spot > 100 and < 300:
+		B3 = 
+		B4 = 
+		B5 = 
+	if spot > 200 and < 300:
+		C3 = 
+		C5 = 
+	if spot > 300 and < 400:
+		D3 = 
+		D4 = 
+		D5 = 
+	E1 = 
+	E2 = 
+	E3 = 
+	E4 = 
+	E5 = 
+	F1 = 
+	F2 = 
+	F3 = 
+	F4 = 
+	F5 = 
+	F6 = 
+	F7 = 
+	F8 = 
+	F9 = 
+	F10 = 
+	F11 = 
+	F12 = 
+	G1 = 
+	G3 = 
+	G4 = 
+	G6 = 
+	G7 = 
+	G9 = 
+	G10 = 
+	G12 = 
+	H1 = 
+	H2 = 
+	H3 = 
+	H4 = 
+	H5 = 
+	H6 = 
+	H7 = 
+	H8 = 
+	H9 = 
+	H10 = 
+	H11 = 
+	H12 = 
+	I1 = 
+	I2 = 
+	I3 = 
+	I4 = 
+	I5 = 
+	I6 = 
+	I7 = 
+	I8 = 
+	I9 = 
+	I10 = 
+	I11 = 
+	I12 = 
+	I13 = 
+	J1 = 
+	J2 = 
+	J3 = 
+	J4 = 
+	J5 = 
+	J6 = 
+	J7 = 
+	J8 = 
+	J9 = 
+	J10 = 
+	J11 = 
+	J12 = 
+	K1 = 
+	K3 = 
+	K4 = 
+	k6 = 
+	K7 = 
+	K9 = 
+	K10 = 
+	K12 = 
+	L1 = 
+	L2 = 
+	L3 = 
+	L4 = 
+	L5 = 
+	L6 = 
+	L7 = 
+	L8 = 
+	L9 = 
+	L10 = 
+	L11 = 
+	L12 = 
+	M1 = 
+	M2 = 
+	M3 = 
+	M4 = 
+	M5 = 
+	N2 = 
+	N3 = 
+	N4 = 
+	O2 = 
+	O4 = 
+	P2 = 
+	P3 = 
+	P4 = 
+	Q2 = 
+	Q3 = 
+	Q4 = 
+	R18 = 
+	R19 = 
+	S17 = 
+	S18 = 
+	S19 = 
+	T18 = 
+	T19 = 
