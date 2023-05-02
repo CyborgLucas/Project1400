@@ -1,48 +1,78 @@
+import random
 
-moveop = ["N","n","E","e","S","s","W","w"]
-posibleact = ["N","n","E","e","S","s","W","w","Interact","interact","Use","use"]
+moveop = ["N","E","S","W"]
+posibleact = ["N","E","S","W","Interact"]
+letters = ["B-4","E-3","F-4","G-5","K-8","L-9","M-6","N-5","P-0","R-4","S-2","T-5","U-7","V-3","W-2","X-1","Y-6"]
 inventory = []
+combanation = "3177418056"
 dendt = 1
-traitor = true
+traitor = True
 x = 19
 y = 18
+level = 2
+end = False
+lose = False
+win = False
+Fhealth = 5
+Yhealth = 5
+potion = False
+choice = "No"
+Ghost = ""
+Stalker = ""
+Phantom = ""
+char = ""
+cord = "S,18"
+
+
 def Sarah():
-	if sarahp == true and end != true:
-		print("Sarah - I have some pieces. You'll need to find the rest of the puzzle.")
-	elif sarahp == false and end != true:
-		print("Sarah - You have all that I found.")
-	else:
-		if end == true:
+	action()
+	if choice in ("Interact","interact"):
+		if end != True:
+			print("Sarah - You need to go get clues.")
+		if end == True:
 			print("Sarah - Here is the treasure!")
-		elif traitor == true and lose == true:
+		elif traitor == True and lose == True:
 			print("Sarah - Did he get away?")
+	while choice not in moveop:
+		print("You have to move to a legal space.")
+		action()
+	cords(choice)
 
 def Daniel():
-	if end == false:
-		print("Daniel - Can you open the vault?")
-	elif end == true:
-		if traitor == true and dendt == 1:
-			print("Daniel - YES! You got the clues!")
-			dendt += 1
-		elif traitor == true and dendt == 2:
-			print("Daniel - Oh that THIEF!")
-		elif traitor == true and lose == true:
-			print("Daniel - ...")
-	return dendt
+	action()
+	if choice in ("Interact","interact"):
+		if end == False:
+			print("Daniel - Can you open the vault?")
+		elif end == True:
+			if traitor == True and dendt == 1:
+				print("Daniel - YES! You got the clues!")
+				dendt += 1
+			elif traitor == True and dendt == 2:
+				print("Daniel - Oh that THIEF!")
+			elif traitor == True and lose == True:
+				print("Daniel - ...")
+			elif traitor == True and win == True:
+				print("Daniel - Yes you got him!")
+		return dendt
+	while choice not in moveop:
+		print("You have to move to a legal space.")
+		action()
+	cords(choice)
 
 def Fred():
-	if fredp == true and end != true:
-		print("Fred - I have some pieces to the puzzle.")
-	elif fredp == false and end != true:
-		print("Fred - I have nothing.")
-	elif end == true:
-		if traitor == true:
+	action()
+	if choice in ("Interact","interact"):
+		if traitor == True:
 			print("Fred - You will never stop me!")
-		elif traitor != true:
-			print("Now I can retire!")
+		elif traitor != True:
+			print("Fred - Now I can retire!")
+	while choice not in moveop:
+		print("You have to move to a legal space.")
+		action()
+	cords(choice)
 
-def move(moveop):
-	map = """
+def map():
+	print("""
 ______________________________________________________________
 |       A B C D E F G H I J K L M N O P Q                     |
 |              ___________________                            |
@@ -59,7 +89,7 @@ ______________________________________________________________
 |  11           | - T - - - T P |    17  |___+___|            |
 |  12           | - - - - - - - |    18  | P - P |            |
 |  13           |______ - ______|    19  | - = P |            |
-|                      |_|           20  |_______|            |
+|                      |_|               |_______|            |
 |_____________________________________________________________|
 
 P   --  person / thing
@@ -70,320 +100,857 @@ T   --  pillar
 -   --  nothing
 
 
-"""
+""")
 
 def action():
-	choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\nUse -- Use avalable item\n")
+	choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\n").upper()
 	while choice not in posibleact:
 		print("That is not a valid action here.\n")
-		choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\nUse -- Use avalable item\n")
-	return choice
+		choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\n")
+		map()
 
 def empty():
-	print("I don’t see anything.")
-	action()
+	print("You - I don’t see anything.")
+	choice = ""
 
-def lootspace():
-	print("Is that a clue?")
+def lootspace(thing):
+	if thing == True:
+		print("You - Is that a clue?")
+	else:
+		print("You - I don’t see anything.")
 	action()
-	if choice == Interact or interact:
-		inventory.append(item)
-		print("Yes! That was a clue.")
+	if choice == Interact:
+		if thing == True:
+			item = random.choice(letters)
+			inventory.append(item)
+			letters.remove(item)
+			print("You - Yes! That was a clue.")
+			thing = False
+			return thing
+		else:
+			print("You can't do that here.")
 
 def secretkey():
-	print("There is something weird about this wall...")
+	print("You - There is something weird about this wall...")
 	action()
-	if choice == Interact or interact:
+	if choice == Interact:
 		inventory.append(key)
-		print("That is the Key!")
+		print("You - That is the Key!")
 
 def secretpotion():
-	print("There is something weird about this wall...")
-	if choice == Interact or interact:
-		inventory.append(potion)
-		print("Is that... a potion?")
+	print("You - There is something weird about this wall...")
+	action()
+	if choice == Interact:
+		Yhealth = 10
+		print("You - Is that... a potion?")
+		return Yhealth
 
 def ghost(): #Nice
-	print("If you help me I might be able to help you with your puzzel. I need the ####")
-	action()
-	if choice == Interact or interact:
-		if #### in inventory:
-			inventory.append(##,##)
-			return inventory
-		else:
-		print("I need the #### to be freed, I can't help until so.")
+	if Ghost != "freed":
+		print("Ghost - If you help me I might be able to help you with your puzzel. I need a mirror")
+		action()
+		if choice == Interact:
+			if "mirror" in inventory:
+				print("Ghost - Thank you, here you go!")
+				inventory.append("I-8","J-7")
+				Ghost = "freed"
+			else:
+				print("Ghost - I need a mirror to be freed, I can't help until so.")
+	elif Ghost == "freed":
+		print("I don't see anyhting.")
 
 def stalker(): #Mean
-	print("You can’t get the clue until you can help me. I'll be freed it you give me the ####")
-	action()
-	if choice == Interact or interact:
-		if #### in inventory:
-			inventory.append(##,##,##)
-			return inventory
-		else:
-		print("I need the #### to be freed, I won't give you help until so.")
+	if stalker != "freed":
+		print("Stalker - You can’t get the clue until you can help me. I'll be freed it you give me a bag")
+		action()
+		if choice == Interact:
+			if "bag" in inventory:
+				print("Stalker - Fine you can go.")
+				inventory.append("D-3","Q-1","Z-0")
+				Stalker = "freed"
+			else:
+			print("Stalker - I need a bag to be freed, I won't give you help until so.")
+	elif Stalker == "freed":
+		print("I don't see anything.")
 
 def phantom(): #Help
-	print("I have been trapped here for 1723 years! I’ll get you some clues if you free me from my curse. I need the #### nad ####")
+	if phantom != "freed":
+		print("I have been trapped here for 1723 years! I’ll get you some clues if you free me from my curse. I need water and gum")
+		action()
+		if choice == Interact:
+			if "water" and "gum" in inventory:
+				inventory.append("A-1","C-2","H-6","O-9")
+				traitor = False
+				Phantom = "freed"
+			else:
+				print("Phantom - I still need the two items!")
+	elif phantom == "freed":
+		print("I don't see anything.")
+
+def staircase(level):
+	print("You can go to the other floor from here (interact)")
 	action()
-	if choice == Interact or interact:
-		if #### and #### in inventory:
-			inventory.append(##,##,##,##)
-			traitor = false
-			return inventory
+	if choice == Interact:
+		if level == 1:
+			x = 19
+			y = 19
+		if level == 2:
+			x = 9
+			y = 2
+
+def vault():
+	attempt = input("What is the combanation?")
+		if attempt == combanation:
+			end = True
+			Daniel()
+			Sarah()
+			if traitor == False:
+				Fred()
+				print("You won!")
+			elif traitor == True:
+				print("The treasure isn't there!! The phantom helped Fred steal the treasure!")
+				Daniel()
+				print("You - I’ll find him. I need to get to the entrance as quickly as possible! I need to waste as little  time as I can if I want to have a chance to get there before Fred escapes the temple!")
+				print("(He is trying to get out as quick as possible)")
 		else:
-			print("I still need the two ####")
-		
+			print("That wasn't that right combanation")
+	cords(choice)
+
+def cords(choice):
+	if choice == "N":
+		y += 1
+		return y
+	if choice == "E":
+		x += 1
+		return x
+	if choice == "S":
+		y -= 1
+		return y
+	if choice == "W":
+		x -= 1
+		return x
+	if x == 1:
+		char = "A"
+	elif x == 2:
+		char = "B"
+	elif x == 3:
+		char = "C"
+	elif x == 4:
+		char = "D"
+	elif x == 5:
+		char = "E"
+	elif x == 6:
+		char = "F"
+	elif x == 7:
+		char = "G"
+	elif x == 8:
+		char = "H"
+	elif x == 9:
+		char = "I"
+	elif x == 10:
+		char = "J"
+	elif x == 11:
+		char = "K"
+	elif x == 12:
+		char = "L"
+	elif x == 13:
+		char = "M"
+	elif x == 14:
+		char = "N"
+	elif x == 15:
+		char = "O"
+	elif x == 16:
+		char = "P"
+	elif x == 17:
+		char = "Q"
+	elif x == 18:
+		char = "R"
+	elif x == 19:
+		char = "S"
+	elif x == 20:
+		char = "T"
+	cord = f"{char},{y}"
+	return cord
 
 def spot_actions()
-	if x = 1:
-		if y = 3:
+	if x == 1:
+		if y == 3:
+			phantom()
+			while choice not in ("E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 4:
+			lootspace()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 5:
+			empty()
+			while choice not in ("N","E"):
+				print("You have to move to a legal space.")
+				action()
+
+	if x == 2:
+		if y == 3:
+			lootspace()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 4:
+			lootspace()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 5:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+
+	if x == 3:
+		if y == 3:
+			empty()
+			while choice not in ("E","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 5:
+			empty()
+			while choice not in ("E","W"):
+				print("You have to move to a legal space.")
+				action()
+
+	if x == 4:
+		if y == 3:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 4:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 5:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+
+	if x == 5:
+		if y == 1:
+			secretkey()
+			while choice not in ("E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 2:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 3:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 4:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 5:
+			empty()
+			while choice not in ("N","E","W")v\:
+				print("You have to move to a legal space.")
+				action()
+
+	if x == 6:
+		if y == 1:
+			lootspace()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 2:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 3:
+			lootspace()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 4:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 5:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 6:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 7:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 8:
+			empty()
+			while choice not in ("N","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 9:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 10:
+			lootspace()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 11:
+			empty()
+			while choice not in ("N","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 12:
+			empty()
+			while choice not in ("N","E"):
+				print("You have to move to a legal space.")
+				action()
+
+	if x == 7:
+		if y == 1:
+			empty()
+			while choice not in ("E","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 3:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 4:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 6:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 7:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 9:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 10:
+			lootspace()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 12:
+			empty()
+			while choice not in ("E","W"):
+				print("You have to move to a legal space.")
+				action()
+
+	if x == 8:
+		if y == 1:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 2:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 3:
+			lootspace()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 4:
+			lootspace()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 5:
+			lootspace()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 6:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 7:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 8:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 9:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 10:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 11:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+
+		if y == 12:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 9:
+		if y == 1:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 2:
+			level = 1
+			staircase(level)
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 3:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 4:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 5:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 6:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 7:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 8:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 9:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 10:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 11:
+			lootspace()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 12:
+			if end == True:
+				print("You - STOP!")
+				Fred()
+				fight = input("Fred pulls out a gun for a standoff, do you let him go or duel him? (leave, duel)")
+				while fight not in ("leave","Leave","duel","Duel"):
+					print("That isn't a valid option.")
+				if fight in ("duel","Duel"):
+					while lose != True or win != True:
+						hit = random.randrange(3)
+						if hit in (1,4,5):
+							Fhealth -= 1
+							print(f"You hit Fred! He has {Fhealth} health left.")
+							if Fhealth == 0:
+								win = True
+								print("You stopped him! You can now g ohome knowing you have money to spend.")
+								Daniel()
+								print("Game over, You won!")
+						elif hit in (2,6):
+							Yhealth -= 1
+							print(f"You got hit... You have {Yhealth} helth left.")
+							if Yhealth = 0:
+								lose = True
+								Sarah()
+								Daniel()
+								print("You - Yes...")
+								print("You lost, Fred got away with your treasure and now you will live a poor life...")
+						elif hit == 3:
+							print("You missed!")
+				elif fight in ("Leave","leave"):
+			elif end != True:
+				print("I don't see anything")
+				while choice not in moveop:
+					print("You have to move to a legal space.")
+					action()
+
+		if y == 13:
+			empty()
+			while choice not in ("N"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 10:
+		if y == 1:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 2:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 3:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 4:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 5:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 6:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 7:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 8:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 9:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 10:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 11:
+			lootspace()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 12:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 11:
+		if y == 1:
+			empty()
+			while choice not in ("E","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 3:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 4:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 6:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 7:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 9:
+			lootspace()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 10:
+			lootspace()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 12:
+			empty()
+			while choice not in ("E","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 12:
+		if y == 1:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 2:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 3:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 4:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 5:
+			empty()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 6:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 7:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 8:
+			secretpotion()
+			while choice not in ("N","S"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 9:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 10:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 11:
+			stalker()
+			while choice not in ("N","S"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 12:
+			empty()
+			while choice not in ("N","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 13:
+		if y == 1:
+			empty()
+			while choice not in ("S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 2:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 3:
+			ghost()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 4:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 5:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 14:
+		if y == 3:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 4:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 5:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 15:
+		if y == 3:
+			lootspace()
+			while choice not in ("E","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 5:
+			empty()
+			while choice not in ("E","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 16:
+		if y == 3:
+			empty()
+			while choice not in ("E","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 4:
+			lootspace()
+			while choice not in ("N","E","S"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 5:
+			empty()
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 17:
+		if y == 3:
+			lootspace()
+			while choice not in ("S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 4:
+			empty()
+			while choice not in ("N","S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 5:
+			empty()
+			while choice not in ("N","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 18:
+		if y == 18:
+			Sarah()
+			while choice not in ("E","S"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 19:
+			empty()
+			while choice not in ("N","E"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 19:
+		if y == 17:
+			vault()
+			while choice not in ("S"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 18:
+			empty()
+			while choice not in moveop:
+				print("You have to move to a legal space.")
+				action()
+		if y == 19:
+			level = 2
+			staircase(level)
+			while choice not in ("N","E","W"):
+				print("You have to move to a legal space.")
+				action()
+	if x == 20:
+		if y == 18:
+			Daniel()
+			while choice not in ("S","W"):
+				print("You have to move to a legal space.")
+				action()
+		if y == 19:
+			Fred()
+			while choice not in ("N","W"):
+				print("You have to move to a legal space.")
+				action()
 
-		if y = 4:
-			
-		if y = 5:
-
-	if x = 2:
-		if y = 3:
-
-		if y = 4:
-
-		if y = 5:
-
-	if x = 3:
-		if y = 3:
-
-		if y = 5:
-
-	if x = 4:
-		if y = 3:
-
-		if y = 4:
-
-		if y = 5:
-
-	if x = 5:
-		if y = 1:
-
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-		if y = 5:
-
-	if x = 6:
-		if y = 1:
-
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-		if y = 5:
-
-		if y = 6:
-
-		if y = 7:
-
-		if y = 8:
-
-		if y = 9:
-
-		if y = 10:
-
-		if y = 11:
-
-		if y = 12:
-
-	if x = 7:
-		if y = 1:
-
-		if y = 3:
-
-		if y = 4:
-
-		if y = 6:
-
-		if y = 7:
-
-		if y = 9:
-
-		if y = 10:
-
-		if y = 12:
-
-	if x = 8:
-		if y = 1:
-
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-		if y = 5:
-
-		if y = 6:
-
-		if y = 7:
-
-		if y = 8:
-
-		if y = 9:
-
-		if y = 10:
-
-		if y = 11:
-
-		if y = 12:
-
-	if x = 9:
-		if y = 1:
-
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-		if y = 5:
-
-		if y = 6:
-
-		if y = 7:
-
-		if y = 8:
-
-		if y = 9:
-
-		if y = 10:
-
-		if y = 11:
-
-		if y = 12:
-			
-		if y = 13:
-
-	if x = 10:
-		if y = 1:
-
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-		if y = 5:
-
-		if y = 6:
-
-		if y = 7:
-
-		if y = 8:
-
-		if y = 9:
-
-		if y = 10:
-
-		if y = 11:
-
-		if y = 12:
-
-	if x = 11:
-		if y = 1:
-
-		if y = 3:
-
-		if y = 4:
-
-		if y = 6:
-
-		if y = 7:
-
-		if y = 9:
-
-		if y = 10:
-
-		if y = 12:
-
-	if x = 12:
-		if y = 1:
-
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-		if y = 5:
-
-		if y = 6:
-
-		if y = 7:
-
-		if y = 8:
-
-		if y = 9:
-
-		if y = 10:
-
-		if y = 11:
-
-		if y = 12:
-
-	if x = 13:
-		if y = 1:
-
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-		if y = 5:
-
-	if x = 14:
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-	if x = 15:
-		if y = 2:
-
-		if y = 4:
-
-	if x = 16:
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-	if x = 17:
-		if y = 2:
-
-		if y = 3:
-
-		if y = 4:
-
-	if x = 18:
-		if y = 18:
-
-		if y = 19:
-
-	if x = 19:
-		if y = 17:
-
-		if y = 18:
-
-		if y = 19:
-
-	if x = 20:
-		if y = 18:
-
-		if y = 19:
