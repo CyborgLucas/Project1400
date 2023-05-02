@@ -94,6 +94,7 @@ def action():
 	while choice not in posibleact:
 		print("That is not a valid action here.\n")
 		choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\n")
+	return choice
 	print(map())
 
 def empty(legal):
@@ -301,7 +302,7 @@ def cords(choice,x,y):
 	print(cord)
 	return cord,x,y
 
-def spot_actions(x,y):
+def spot_actions(x,y,end):
 	if x == 1:
 		if y == 3:
 			legal = ("E","S")
@@ -875,7 +876,7 @@ def spot_actions(x,y):
 			legal = ("E","S")
 			print("There is Sarah")
 			action()
-			if choice in ("Interact"):
+			if choice == "Interact":
 				if end != True:
 					print("Sarah - You need to go get clues.")
 				if end == True:
@@ -896,7 +897,7 @@ def spot_actions(x,y):
 			legal = ("S")
 			print("This is the vault.")
 			action()
-			if choice == Interact:
+			while choice == Interact:
 				attempt = input("What is the combanation?")
 				if attempt == combanation:
 					end = True
@@ -912,6 +913,7 @@ def spot_actions(x,y):
 						print("(He is trying to get out as quick as possible)")
 				else:
 					print("That wasn't that right combanation")
+				action()
 			while choice not in legal:
 				print("You have to move to a legal space.")
 				action()
@@ -920,7 +922,7 @@ def spot_actions(x,y):
 		if y == 18:
 			legal = (moveop)
 			if end != True:
-				print("Hello everyone!")
+				print("You - Hello everyone!")
 				print("Sarah - Do you have the clues?")
 			action()
 			while choice not in legal:
@@ -947,10 +949,35 @@ def spot_actions(x,y):
 	if x == 20:
 		if y == 18:
 			legal = ("S","W")
-			empty(legal)
+			print("This is Daniel")
+			action()
+			if choice == "Interact":
+				if end == False:
+					print("Daniel - Can you open the vault?")
+				elif end == True:
+					if traitor == True and dendt == 1:
+						print("Daniel - YES! You got the clues!")
+						dendt += 1
+					elif traitor == True and dendt == 2:
+						print("Daniel - Oh that THIEF!")
+					while choice not in legal:
+						print("You have to move to a legal space.")
+						action()
 
 		if y == 19:
 			legal = ("N","W")
-			empty(legal)
+			print("This is Fred")
+			if choice == "Interact":
+				print("You - Hi Fred.")
+				print("Fred - Hrfff")
+			action()
+			while choice not in legal:
+				print("You have to move to a legal space.")
+				action()
 
-spot_actions(x,y)
+
+
+print("\tWelcome to GAME!\nThe goal of the game is to go around and collect clues to crack the code.\nYou will need to help the spirits become free, they will reward you!\n")
+print(map())
+cords(None,x,y)
+spot_actions(x,y,end)
