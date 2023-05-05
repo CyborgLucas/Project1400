@@ -7,6 +7,13 @@ MOVEMENT = {"leftwing":array([0,-1,1]),
 			"center":array([0,0,1]),
 			"vault":array([0,0,0])}
 
+ACTIONS=("quit",
+		 "save",
+		 "load",
+		 "get",
+		 "use",
+		 "move")
+
 Map = """
              _________________
  ___________|                 |___________
@@ -38,11 +45,18 @@ class Player():
 
 player = Player()
 
+def valid_input():
+	response = None
+	while response not in ACTIONS:
+		print(f"\nActions:\n'quit', 'save', 'load', 'get', 'use', 'move'")
+		response = input("What would you like to do?   \n").lower()
+	return response
+
 def save():
 	with open('game.dat','wb') as f:
 		pickle.dump(player,f)
 		pickle.dump(rooms,f)
-	print("Game saved!")
+	print("\nGame saved!\n")
 
 def load():
 	global player
@@ -51,12 +65,11 @@ def load():
 		with open("game.dat",'rb') as f:
 			player = pickle.load(f)
 			rooms = pickle.load(f)
-		print("Game loaded!")
+		print("\nGame loaded!\n")
 	except FileNotFoundError:
-		print("Game file not found...")
+		print("\nGame file not found...\n")
 
 class Room():
-	'''Room Object'''
 	def __init__(self):
 		self.room_items = []
 		self.usable_items = {}
@@ -65,7 +78,7 @@ class Room():
 	
 	def get(self, player):
 		if self.room_items:
-			pick = input("What item would you like to pickup?").lower()
+			pick = input(f"What item would you like to pickup?   \nItems: {r.room_items}   ").lower()
 			if pick in self.room_items:
 				print(f"You pickup {pick}.")
 				player.inventory.append(pick)
@@ -77,8 +90,8 @@ class Room():
 
 	def use(self, player):
 		if player.inventory:
-			print(f"Your inventory:\n{player.inventory}")
-			pick = input("What would you like to use?").lower()
+			print(f"\nYour inventory:\n{player.inventory}")
+			pick = input("What would you like to use?   ").lower()
 			if pick in player.inventory:
 				if pick in self.usable_items:
 					print(self.useable_items[pick])
@@ -86,7 +99,7 @@ class Room():
 					del self.usable_items[pick]
 					self.special(pick)
 				else:
-					print(f"You can't use {pick} here.")
+					print(f"\nYou can't use {pick} here.")
 			else:
 				print(f"You don't have {pick} in your inventory.")
 		else:
@@ -94,7 +107,7 @@ class Room():
 
 	def move(self, player):
 		print(f"You can go to: {self.allowed_movements}")
-		direction = input("Where do you want to go?")
+		direction = input("Where do you want to go?   ")
 		if direction in MOVEMENT:
 			if direction in self.allowed_movements:
 				print(f"You moved to the {direction}.")
@@ -110,17 +123,17 @@ r = Room() #rightwing
 r.room_items.append('D - 3')
 r.room_items.append('U - 6')
 r.room_items.append('I - 4')
-r.usable_items[] = ""
+r.usable_items[None] = ""
 r.allowed_movements.append('center')
 r.descriptions[(('D - 3'),('U - 6'),('I - 4'))] = "You haven't touched this room."
-r.descriptions[((),(),())] = "You have cleared out this room"
+r.descriptions[((),(),())] = "You have cleared out this room."
 rooms[(0,1,1)]=r
 
 r = Room() #leftwing
 r.room_items.append('F - 7')
 r.room_items.append('P - 8')
 r.room_items.append('G - 0')
-r.usable_items[] = ""
+r.usable_items[None] = ""
 r.allowed_movements.append('center')
 r.descriptions[(('F - 7'),('P - 8'),('G - 0'))] = "You have't touched this room."
 r.descriptions[((),(),())] = "You have cleared out this room."
@@ -129,19 +142,15 @@ rooms[(0,-1,1)]=r
 r = Room() #center
 r.room_items.append('Q - 1')
 r.room_items.append('M - 5')
-r.room_items.append("""
-_ _ _ _ _ _ _ _ _ _
-D Q F F I Q P G M U
-""")
-r.usable_items['stone'] = "You used the stone to break open the suspitious wall."
+r.room_items.append("""_ _ _ _ _ _ _ _ _ _
+D Q F F I Q P G M U""")
+r.usable_items['stone'] = "You use the stone to break open the suspitious wall."
 r.allowed_movements.append('leftwing')
 r.allowed_movements.append('rightwing')
 r.allowed_movements.append('vault')
 r.descriptions[((),(),())] = "You have cleared out this room."
-r.descriptions[(('Q - 1',),("M - 5",),("""
-_ _ _ _ _ _ _ _ _ _
-D Q F F I Q P G M U
-"""))] = "I still think there is something here."
+r.descriptions[(('Q - 1',),("M - 5",),("""_ _ _ _ _ _ _ _ _ _
+D Q F F I Q P G M U"""))] = "I still think there is something here."
 r.descriptions[(('Q - 1',),('M - 5'),())] = "You have broken the wall but haven't looked for clues."
 r.descriptions[(('Q - 1'),('M - 5'),("""
 _ _ _ _ _ _ _ _ _ _
@@ -150,29 +159,28 @@ D Q F F I Q P G M U
 rooms[(0,0,1)]=r
 
 r = Room() #Vault
-r.room_items.append()
-r.usable_items[] = ""
 r.allowed_movements.append('center')
-r.descriptions[(('key',),("stick",))] = "Entry: There's a mound of dirt."
-r.descriptions[(('key',),())] = "Entry: An uncovered key with scattered dirt around it and a used stick."
-r.descriptions[((),())] = "Entry: Scattered dirt and a used stick."
+r.descriptions[((),())] = "Your friends are waiting for you to open the vault."
 rooms[(0,0,0)]=r
 
 def main(player):
 	choice = None
-	while choice != "q":
+	while choice != "quit":
 		room = rooms.get(player.position, "Invalid room setting - something broke")
-		print(room.descriptions())
+		print(room.descriptions)
 		choice = valid_input()
-		if choice == "q":
-			print("Goodbye!")
-		elif choice == "s":
+		if choice == "quit":
+			print("\n\nGoodbye!\n")
+		elif choice == "save":
 			save()
-		elif choice == "l":
+		elif choice == "load":
 			load()
-		elif choice == "g":
-			room.get_item(player)
-		elif choice == "u":
-			room.use_item(player)
-		elif choice == "m":
+		elif choice == "get":
+			room.get(player)
+		elif choice == "use":
+			room.use(player)
+		elif choice == "move":
 			room.move(player)
+
+if __name__ == "__main__":
+	main(player)
