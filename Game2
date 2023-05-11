@@ -148,10 +148,10 @@ r.allowed_movements.append('rightwing')
 r.allowed_movements.append('vault')
 r.descriptions[((),(),())] = "You have cleared out this room."
 r.descriptions[(('Q - 1',),("M - 5",),("""_ _ _ _ _ _ _ _ _ _
-D Q F F I Q P G M U"""))] = "I still think there is something here."
+D Q F F I Q P G M U"""))] = "You haven't touched this"
 r.descriptions[(('Q - 1',),('M - 5'),())] = "You have broken the wall but haven't looked for clues."
-r.descriptions[(('Q - 1'),('M - 5'),("""_ _ _ _ _ _ _ _ _ _
-D Q F F I Q P G M U"""),('sword'))] = "You haven't touched this room."
+#r.descriptions[(('Q - 1'),('M - 5'),("""_ _ _ _ _ _ _ _ _ _
+#D Q F F I Q P G M U"""),('sword'))] = "You haven't touched this room."
 rooms[(0,0,1)]=r
 
 r = Room() #Vault
@@ -163,8 +163,7 @@ def main(player):
 	choice = None
 	while choice != "quit":
 		room = rooms.get(player.position)
-		i = room.descriptions
-		print(i)
+		print(room.descriptions)
 		choice = valid_input()
 		if choice == "quit":
 			print("\n\nGoodbye!\n")

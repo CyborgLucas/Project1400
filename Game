@@ -58,8 +58,7 @@ def Fred():
 		elif traitor != True:
 			print("Fred - Now I can retire!")
 """
-def map():
-	print("""
+Map = """
 ______________________________________________________________
 |       A B C D E F G H I J K L M N O P Q                     |
 |              ___________________                            |
@@ -86,7 +85,7 @@ P   --  person / thing
 T   --  pillar
 -   --  nothing
 
-""")
+"""
 
 
 def action():
@@ -95,7 +94,7 @@ def action():
 		print("That is not a valid action here.\n")
 		choice = input("What do you want to do?\nN, E, S, W -- Move\nInteract -- Pick up or talk\n")
 	return choice
-	print(map())
+	print(Map)
 
 def empty(legal):
 	print("You - I don’t see anything.")
@@ -925,7 +924,7 @@ def spot_actions(x,y,end):
 				print("You - Hello everyone!")
 				print("Sarah - Do you have the clues?")
 			action()
-			while choice not in legal:
+			while choice not in moveop:
 				print("You have to move to a legal space.")
 				action()
 
@@ -978,6 +977,6 @@ def spot_actions(x,y,end):
 
 
 print("\tWelcome to GAME!\nThe goal of the game is to go around and collect clues to crack the code.\nYou will need to help the spirits become free, they will reward you!\n")
-print(map())
+print(Map)
 cords(None,x,y)
 spot_actions(x,y,end)
